@@ -59,7 +59,7 @@ async function loadFAQ() {
   }
 }
 
-function toggleFAQ(button) {
+window.toggleFAQ = function(button) {
   const isExpanded = button.getAttribute('aria-expanded') === 'true';
   const answerId = button.getAttribute('aria-controls');
   const answer = document.getElementById(answerId);
