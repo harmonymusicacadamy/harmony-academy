@@ -30,15 +30,15 @@ async function loadPricing() {
 
     mount.innerHTML = rows
       .map((row) => {
-        const perks = parsePerks(row.Perks)
+        const perks = parsePerks(row.Perks || row.C || '')
           .map((p) => `<li>${escapeHtml(p)}</li>`)
           .join('');
-        const priceText = String(row.Price || '').trim();
+        const priceText = String(row.Price || row.B || '').trim();
         const priceLooksNumeric = /^[\$₹€£]?\s?[\d,.]+/.test(priceText);
 
         return `
         <article class="price-card reveal in-view">
-          <div class="level">${escapeHtml(row.Level)}</div>
+          <div class="level">${escapeHtml(row.Level || row.A)}</div>
           <div class="price">${escapeHtml(priceText)}${priceLooksNumeric ? '<small> / mo</small>' : ''}</div>
           <ul>${perks}</ul>
           <a href="${SITE_CONFIG.STUDENT_PORTAL_URL}" target="_blank" rel="noopener" class="btn btn-outline">Get Started</a>
