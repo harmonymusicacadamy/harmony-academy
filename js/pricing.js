@@ -4,6 +4,8 @@
  * or comma-separated — both are parsed correctly.
  */
 
+console.log("pricing.js loaded");
+
 function parsePerks(raw) {
   if (!raw) return [];
   const text = String(raw);
