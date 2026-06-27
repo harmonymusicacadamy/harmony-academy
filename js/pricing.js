@@ -3,6 +3,15 @@
  * "Perks" can be written in the sheet as one perk per line (preferred)
  * or comma-separated — both are parsed correctly.
  */
+function escapeHtml(text) {
+    if (text === null || text === undefined) return "";
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
 function parsePerks(raw) {
   if (!raw) return [];
