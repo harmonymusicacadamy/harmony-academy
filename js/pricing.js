@@ -35,7 +35,7 @@ async function loadPricing() {
           <div class="level">${escapeHtml(row.Level)}</div>
           <div class="price">${escapeHtml(priceText)}${priceLooksNumeric ? '<small> / mo</small>' : ''}</div>
           <ul>${perks}</ul>
-          <a href="${SITE_CONFIG.STUDENT_PORTAL_URL}" target="_blank" rel="noopener" class="btn btn-outline">Get Started</a>
+          <a href="${SITE_CONFIG.GOOGLE_REG}" target="_blank" rel="noopener" class="btn btn-outline">Get Started</a>
         </article>`;
       })
       .join('');
