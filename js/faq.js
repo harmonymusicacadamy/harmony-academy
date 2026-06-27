@@ -29,7 +29,7 @@ async function loadFAQ() {
             id="${questionId}"
             aria-expanded="false" 
             aria-controls="${answerId}"
-            onclick="toggleFAQ(this)">
+            onclick="window.toggleFAQ(this); return false">
             <span class="faq-text">${escapeHtml(row.Question)}</span>
             <span class="faq-toggle" aria-hidden="true">+</span>
           </button>
