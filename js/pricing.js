@@ -4,7 +4,15 @@
  * or comma-separated — both are parsed correctly.
  */
 
-console.log("pricing.js loaded");
+function escapeHtml(text) {
+    if (text === null || text === undefined) return "";
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
 function parsePerks(raw) {
   if (!raw) return [];
@@ -52,8 +60,6 @@ async function loadPricing() {
       .join('');
   } catch (err) {
     console.error(err);
-    console.error("Pricing Error:", e);
-    console.error(e.stack);
     mount.innerHTML = `<div class="empty-state">Couldn't load pricing right now. Make sure the Google Sheet is shared as "Anyone with the link — Viewer."</div>`;
   }
 }
