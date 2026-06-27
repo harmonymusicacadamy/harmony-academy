@@ -120,7 +120,7 @@ function renderFooter() {
       <div>
         <h4>Get in touch</h4>
         <ul>
-          <li><a href="mailto:hello@harmonymusicacademy.com">hello@harmonymusicacademy.com</a></li>
+          <li><a href="mailto:harmonymusicacadamy@gmail.com.com">harmonymusicacadamy@gmail.com</a></li>
           <li><a href="tel:+10000000000">+1 (000) 000-0000</a></li>
           <li><span>Studio address goes here</span></li>
         </ul>
