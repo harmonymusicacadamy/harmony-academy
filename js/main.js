@@ -64,7 +64,7 @@ function renderFooter() {
           <img src="assets/logo-icon.png" alt="Harmony Music Academy logo" />
           <span class="nav-brand-text"><strong>Harmony</strong><br>Music Academy</span>
         </div>
-        <p style="max-width:320px;">Private and group lessons in guitar, piano, vocals, and more — taught by working musicians, for students of every age and level.</p>
+        <p style="max-width:320px;">Private and group lessons in guitar, piano, drums, and more — taught by working musicians, for students of every age and level.</p>
       </div>
       <div>
         <h4>Explore</h4>
