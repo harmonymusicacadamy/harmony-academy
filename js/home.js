@@ -1,6 +1,7 @@
 /**
  * home.js — populates the Latest News and Testimonials sections
  * on index.html straight from the Google Sheet.
+ * Testimonials now render as an auto-sliding carousel.
  */
 
 async function loadLatestNews() {
@@ -39,7 +40,7 @@ async function loadLatestNews() {
 }
 
 async function loadTestimonials() {
-  const mount = document.getElementById('testiGrid');
+  const mount = document.getElementById('testiCarousel');
   if (!mount) return;
   try {
     const rows = await fetchSheetTab(SITE_CONFIG.TABS.TESTIMONIALS);
@@ -49,25 +50,93 @@ async function loadTestimonials() {
       return;
     }
 
-    mount.innerHTML = rows
+    // Create carousel slides
+    const slides = rows
       .map((row) => {
         const linkKey = Object.keys(row).find((k) => k.toLowerCase().includes('link'));
         const embedUrl = linkKey ? driveEmbedUrl(row[linkKey]) : '';
         return `
-        <article class="testi-card reveal in-view">
-          ${renderStars(row.Rating)}
-          <p class="quote">“${escapeHtml(row.Review)}”</p>
-          <div class="testi-foot">
-            <div class="name">${escapeHtml(row.Name)}</div>
-            ${embedUrl ? `<button class="video-pill" onclick="openVideoModal('${embedUrl}')"><span class="dot"></span> Watch video</button>` : ''}
-          </div>
-        </article>`;
+        <div class="testi-slide">
+          <article class="testi-card reveal in-view">
+            ${renderStars(row.Rating)}
+            <p class="quote">"${escapeHtml(row.Review)}"</p>
+            <div class="testi-foot">
+              <div class="name">${escapeHtml(row.Name)}</div>
+              ${embedUrl ? `<button class="video-pill" onclick="openVideoModal('${embedUrl}')" type="button"><span class="dot"></span> Watch</button>` : ''}
+            </div>
+          </article>
+        </div>`;
       })
       .join('');
+
+    // Build carousel HTML
+    mount.innerHTML = `
+      <div class="testi-carousel-track">
+        ${slides}
+      </div>
+      ${rows.length > 1 ? `
+        <div class="carousel-dots">
+          ${rows.map((_, i) => `<button class="dot ${i === 0 ? 'active' : ''}" onclick="goToTestiSlide(${i})" aria-label="Go to slide ${i + 1}"></button>`).join('')}
+        </div>
+      ` : ''}
+    `;
+
+    // Initialize carousel
+    if (rows.length > 1) {
+      initTestimonialCarousel(rows.length);
+    }
   } catch (err) {
     console.error(err);
     mount.innerHTML = `<div class="empty-state">Couldn't load testimonials right now. Make sure the Google Sheet is shared as "Anyone with the link — Viewer."</div>`;
   }
+}
+
+// Global carousel state
+let testiCurrentSlide = 0;
+let testiAutoplayTimer = null;
+
+function initTestimonialCarousel(totalSlides) {
+  const carousel = document.getElementById('testiCarousel');
+  
+  // Pause on hover
+  carousel.addEventListener('mouseenter', () => clearInterval(testiAutoplayTimer));
+  carousel.addEventListener('mouseleave', () => startAutoplay(totalSlides));
+
+  // Start autoplay
+  startAutoplay(totalSlides);
+}
+
+function startAutoplay(totalSlides) {
+  clearInterval(testiAutoplayTimer);
+  testiAutoplayTimer = setInterval(() => {
+    testiCurrentSlide = (testiCurrentSlide + 1) % totalSlides;
+    updateTestiSlide();
+  }, 5000); // Change slide every 5 seconds
+}
+
+function goToTestiSlide(index) {
+  testiCurrentSlide = index;
+  updateTestiSlide();
+  clearInterval(testiAutoplayTimer);
+  // Restart autoplay
+  const totalSlides = document.querySelectorAll('.testi-slide').length;
+  startAutoplay(totalSlides);
+}
+
+function updateTestiSlide() {
+  const track = document.querySelector('.testi-carousel-track');
+  const slides = document.querySelectorAll('.testi-slide');
+  const dots = document.querySelectorAll('.carousel-dots .dot');
+
+  if (!track || slides.length === 0) return;
+
+  // Slide to current position
+  track.style.transform = `translateX(-${testiCurrentSlide * 100}%)`;
+
+  // Update dot indicators
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === testiCurrentSlide);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
