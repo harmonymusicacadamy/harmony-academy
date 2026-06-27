@@ -14,6 +14,7 @@ function parsePerks(raw) {
 }
 
 async function loadPricing() {
+    console.log("loadPricing started");
   const mount = document.getElementById('pricingGrid');
   if (!mount) return;
   try {
