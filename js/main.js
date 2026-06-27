@@ -39,16 +39,56 @@ function renderHeader(activePage) {
 
   const toggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
+  
+  // Create backdrop overlay
+  const backdrop = document.createElement('div');
+  backdrop.id = 'nav-backdrop';
+  backdrop.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 98;
+  `;
+  document.body.appendChild(backdrop);
+  
   toggle.addEventListener('click', () => {
     const isOpen = navLinks.classList.toggle('open');
     toggle.setAttribute('aria-expanded', String(isOpen));
     toggle.textContent = isOpen ? '✕' : '☰';
+    
+    // Show/hide backdrop
+    if (isOpen) {
+      backdrop.style.opacity = '1';
+      backdrop.style.pointerEvents = 'auto';
+      document.body.style.overflow = 'hidden';
+    } else {
+      backdrop.style.opacity = '0';
+      backdrop.style.pointerEvents = 'none';
+      document.body.style.overflow = 'auto';
+    }
   });
+  
+  // Close menu when clicking backdrop
+  backdrop.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.textContent = '☰';
+    backdrop.style.opacity = '0';
+    backdrop.style.pointerEvents = 'none';
+    document.body.style.overflow = 'auto';
+  });
+  
   navLinks.querySelectorAll('a').forEach((a) =>
     a.addEventListener('click', () => {
       navLinks.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
       toggle.textContent = '☰';
+      backdrop.style.opacity = '0';
+      backdrop.style.pointerEvents = 'none';
+      document.body.style.overflow = 'auto';
     })
   );
 }
@@ -65,7 +105,7 @@ function renderFooter() {
           <img src="assets/logo-icon.png" alt="Harmony Music Academy logo" />
           <span class="nav-brand-text"><strong>Harmony</strong><br>Music Academy</span>
         </div>
-        <p style="max-width:320px;">Private and group lessons in guitar, piano, drums, and more — taught by working musicians, for students of every age and level.</p>
+        <p style="max-width:320px;">Private and group lessons in guitar, piano, vocals, and more — taught by working musicians, for students of every age and level.</p>
       </div>
       <div>
         <h4>Explore</h4>
@@ -80,7 +120,9 @@ function renderFooter() {
       <div>
         <h4>Get in touch</h4>
         <ul>
-          <li><a href="harmonymusicacadamy@gmail.com">harmonymusicacadamy@gmail.com</a></li>
+          <li><a href="mailto:hello@harmonymusicacademy.com">hello@harmonymusicacademy.com</a></li>
+          <li><a href="tel:+10000000000">+1 (000) 000-0000</a></li>
+          <li><span>Studio address goes here</span></li>
         </ul>
       </div>
     </div>
