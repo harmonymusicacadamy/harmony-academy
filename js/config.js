@@ -12,6 +12,7 @@ const SITE_CONFIG = {
     TESTIMONIALS: 'Testimonials',
     COURSES: 'Courses',
     PRICING: 'Pricing',
+    FAQ:'FAQ'
   },
 
   // Where the "Login as Student" button sends people
