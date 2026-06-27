@@ -16,4 +16,5 @@ const SITE_CONFIG = {
 
   // Where the "Login as Student" button sends people
   STUDENT_PORTAL_URL: 'https://script.google.com/macros/s/AKfycbyawEmdOybBdvhXDOcP9lC6BLzwh5RcbDite9T4JHyTvXtJIHpUtEz-WoV4b5KOzRmA/exec',
+  GOOGLE_REG : 'https://forms.gle/e7DBkCfAXG21G9iS7'
 };
