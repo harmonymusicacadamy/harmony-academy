@@ -37,7 +37,7 @@ async function loadPricing() {
           <div class="level">${escapeHtml(row.Level || row.A)}</div>
           <div class="price">${escapeHtml(priceText)}${priceLooksNumeric ? '<small> / mo</small>' : ''}</div>
           <ul>${perks}</ul>
-       <a> href="${SITE_CONFIG.GOOGLE_FORM_URL}"
+          <a href="${SITE_CONFIG.GOOGLE_FORM_URL}"
    target="_blank"
    rel="noopener"
    class="btn btn-primary">
