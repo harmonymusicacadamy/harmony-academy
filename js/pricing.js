@@ -16,6 +16,7 @@ async function loadPricing() {
   if (!mount) return;
   try {
     const rows = await fetchSheetTab(SITE_CONFIG.TABS.PRICING);
+    console.log(rows);
 
     if (rows.length === 0) {
       mount.innerHTML = `<div class="empty-state">No pricing tiers yet — add a row to the "${SITE_CONFIG.TABS.PRICING}" tab (Level, Price, Perks) and it'll appear here automatically.</div>`;
