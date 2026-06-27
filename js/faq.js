@@ -6,6 +6,39 @@
  *   - Answer (the A)
  */
 
+// Global function for FAQ toggle — must be accessible from onclick handlers
+window.toggleFAQ = function(button) {
+  const isExpanded = button.getAttribute('aria-expanded') === 'true';
+  const answerId = button.getAttribute('aria-controls');
+  const answer = document.getElementById(answerId);
+
+  if (!answer) {
+    console.warn('Answer element not found:', answerId);
+    return false;
+  }
+
+  // Toggle expanded state
+  button.setAttribute('aria-expanded', String(!isExpanded));
+
+  if (isExpanded) {
+    // Collapse
+    answer.style.maxHeight = '0px';
+    button.classList.remove('open');
+  } else {
+    // Expand — set max-height to content height
+    const contentHeight = answer.scrollHeight;
+    answer.style.maxHeight = contentHeight + 'px';
+    button.classList.add('open');
+    
+    // Re-calculate if content changes (e.g., images load)
+    setTimeout(() => {
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+    }, 100);
+  }
+  
+  return false;
+};
+
 async function loadFAQ() {
   const mount = document.getElementById('faqAccordion');
   if (!mount) return;
@@ -27,9 +60,10 @@ async function loadFAQ() {
           <button 
             class="faq-question" 
             id="${questionId}"
+            type="button"
             aria-expanded="false" 
             aria-controls="${answerId}"
-            onclick="window.toggleFAQ(this); return false">
+            onclick="window.toggleFAQ(this); return false;">
             <span class="faq-text">${escapeHtml(row.Question)}</span>
             <span class="faq-toggle" aria-hidden="true">+</span>
           </button>
@@ -47,36 +81,11 @@ async function loadFAQ() {
       })
       .join('');
 
-    // Attach click handler to all FAQ items
-    document.querySelectorAll('.faq-question').forEach((btn) => {
-      btn.addEventListener('click', function () {
-        toggleFAQ(this);
-      });
-    });
   } catch (err) {
-    console.error(err);
+    console.error('FAQ Load Error:', err);
     mount.innerHTML = `<div class="empty-state">Couldn't load FAQs right now. Make sure the Google Sheet is shared as "Anyone with the link — Viewer."</div>`;
   }
 }
 
-window.toggleFAQ = function(button) {
-  const isExpanded = button.getAttribute('aria-expanded') === 'true';
-  const answerId = button.getAttribute('aria-controls');
-  const answer = document.getElementById(answerId);
-
-  if (!answer) return;
-
-  button.setAttribute('aria-expanded', String(!isExpanded));
-
-  if (isExpanded) {
-    // Collapse
-    answer.style.maxHeight = '0px';
-    button.classList.remove('open');
-  } else {
-    // Expand
-    answer.style.maxHeight = answer.scrollHeight + 'px';
-    button.classList.add('open');
-  }
-}
-
+// Load FAQs when page is ready
 document.addEventListener('DOMContentLoaded', loadFAQ);
