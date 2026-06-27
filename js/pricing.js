@@ -4,16 +4,6 @@
  * or comma-separated — both are parsed correctly.
  */
 
-function escapeHtml(text) {
-    if (text === null || text === undefined) return "";
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
 function parsePerks(raw) {
   if (!raw) return [];
   const text = String(raw);
@@ -22,13 +12,11 @@ function parsePerks(raw) {
 }
 
 async function loadPricing() {
-    console.log("loadPricing started");
   const mount = document.getElementById('pricingGrid');
   if (!mount) return;
   try {
     console.log("Fetching pricing...");
     const rows = await fetchSheetTab(SITE_CONFIG.TABS.PRICING);
-    console.log(rows);
     mount.innerHTML = "<pre>" + JSON.stringify(rows, null, 2) + "</pre>";
 
     if (rows.length === 0) {
