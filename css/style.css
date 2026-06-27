@@ -698,7 +698,93 @@ p { margin: 0; color: var(--ivory-dim); }
   border-radius: 999px;
 }
 
-/* ===================== ABOUT ===================== */
+/* ===================== FAQ ACCORDION ===================== */
+.faq-item {
+  border-bottom: 1px solid var(--line);
+  transition: background 0.3s var(--ease);
+}
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-question {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 1.4rem 0;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s var(--ease);
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  color: var(--ivory);
+  font-weight: 500;
+}
+.faq-question:hover {
+  color: var(--gold);
+  padding-left: 0.8rem;
+  padding-right: -0.8rem;
+}
+.faq-question:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.faq-text {
+  flex: 1;
+  text-align: left;
+}
+
+.faq-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--ink-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: var(--gold);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  transition: all 0.3s var(--ease);
+}
+.faq-question:hover .faq-toggle {
+  background: rgba(240, 169, 60, 0.12);
+  border-color: var(--gold);
+}
+.faq-question.open .faq-toggle {
+  transform: rotate(45deg);
+  background: rgba(240, 169, 60, 0.2);
+}
+
+.faq-answer {
+  overflow: hidden;
+  transition: max-height 0.4s var(--ease);
+}
+
+.faq-answer-content {
+  padding: 0 0 1.4rem 0;
+  color: var(--ivory-dim);
+  line-height: 1.75;
+  font-size: 0.98rem;
+}
+
+/* ===================== FAQ CONTAINER ===================== */
+.faq-container {
+  background: var(--ink-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ===================== FAQ PAGE ===================== */
 .about-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
