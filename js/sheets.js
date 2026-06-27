@@ -28,16 +28,23 @@ async function fetchSheetTab(tabName) {
   }
 
   const json = JSON.parse(raw.substring(start, end + 1));
-  const cols = json.table.cols.map((c, i) => (c.label || c.id || `col${i}`).trim());
+  let cols = json.table.cols.map((c, i) => (c.label || c.id || `col${i}`).trim());
+let dataRows = json.table.rows || [];
 
-  const rows = (json.table.rows || []).map((r) => {
+if (json.table.parsedNumHeaders === 0 && dataRows.length > 0) {
+    cols = dataRows[0].c.map(cell => String(cell?.v || '').trim());
+    dataRows = dataRows.slice(1);
+}
+
+const rows = dataRows.map((r) => {
     const obj = {};
     cols.forEach((colName, i) => {
-      const cell = r.c[i];
-      obj[colName] = cell ? (cell.f !== undefined && cell.f !== null ? cell.f : cell.v) : '';
+        const cell = r.c[i];
+        obj[colName] =
+            cell ? (cell.f !== undefined && cell.f !== null ? cell.f : cell.v) : '';
     });
     return obj;
-  });
+});
 
   // Drop fully-empty rows (common when a sheet has extra blank rows reserved below the data)
   return rows.filter((row) => Object.values(row).some((v) => v !== '' && v !== null && v !== undefined));
