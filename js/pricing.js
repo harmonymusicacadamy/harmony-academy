@@ -45,7 +45,7 @@ function renderPricingCards(region) {
       return `
         <article class="price-card reveal in-view">
           <div class="level">${escapeHtml(row.Level)}</div>
-          <div class="price">${escapeHtml(priceText)}${priceLooksNumeric ? '<small> / mo</small>' : ''}</div>
+          <div class="price">${escapeHtml(priceText)}${priceLooksNumeric ? '<small> / month</small>' : ''}</div>
           <ul>${perkHtml}</ul>
           <a href="${SITE_CONFIG.STUDENT_PORTAL_URL}" target="_blank" rel="noopener" class="btn btn-outline">Get Started</a>
         </article>`;
