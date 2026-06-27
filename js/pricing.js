@@ -48,4 +48,7 @@ async function loadPricing() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', loadPricing);
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOMContentLoaded fired");
+    loadPricing();
+});
