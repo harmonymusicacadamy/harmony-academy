@@ -3,15 +3,6 @@
  * "Perks" can be written in the sheet as one perk per line (preferred)
  * or comma-separated — both are parsed correctly.
  */
-function escapeHtml(text) {
-    if (text === null || text === undefined) return "";
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
 
 function parsePerks(raw) {
   if (!raw) return [];
@@ -46,12 +37,6 @@ async function loadPricing() {
           <div class="level">${escapeHtml(row.Level || row.A)}</div>
           <div class="price">${escapeHtml(priceText)}${priceLooksNumeric ? '<small> / mo</small>' : ''}</div>
           <ul>${perks}</ul>
-          <a href="${SITE_CONFIG.GOOGLE_FORM_URL}"
-   target="_blank"
-   rel="noopener"
-   class="btn btn-primary">
-   Get Started
-</a>
         </article>`;
       })
       .join('');
