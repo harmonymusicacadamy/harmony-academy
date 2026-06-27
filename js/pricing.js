@@ -18,6 +18,7 @@ async function loadPricing() {
   const mount = document.getElementById('pricingGrid');
   if (!mount) return;
   try {
+    console.log("Fetching pricing...");
     const rows = await fetchSheetTab(SITE_CONFIG.TABS.PRICING);
     console.log(rows);
     mount.innerHTML = "<pre>" + JSON.stringify(rows, null, 2) + "</pre>";
@@ -46,6 +47,8 @@ async function loadPricing() {
       .join('');
   } catch (err) {
     console.error(err);
+    console.error("Pricing Error:", e);
+    console.error(e.stack);
     mount.innerHTML = `<div class="empty-state">Couldn't load pricing right now. Make sure the Google Sheet is shared as "Anyone with the link — Viewer."</div>`;
   }
 }
