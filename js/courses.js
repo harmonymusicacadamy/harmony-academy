@@ -13,12 +13,47 @@
 // The column used as each card's headline. Falls back to the first column found.
 const COURSE_TITLE_KEYS = ['Instrument', 'Course', 'Name', 'Title'];
 
-// Convert Drive links to embeddable URLs
+// Convert Drive links to embeddable image URLs
 function courseImageUrl(link) {
   if (!link || typeof link !== 'string') return '';
-  const idMatch = link.match(/[-\w]{20,}/);
-  const id = idMatch ? idMatch[0] : '';
-  return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w500` : link;
+  
+  const trimmed = link.trim();
+  
+  // If it's already an image URL (not a Drive link), return as-is
+  if (trimmed.startsWith('http') && !trimmed.includes('drive.google.com')) {
+    return trimmed;
+  }
+  
+  // Extract file ID from various Google Drive URL formats
+  let fileId = '';
+  
+  // Format: https://drive.google.com/file/d/FILE_ID/view...
+  if (trimmed.includes('/d/')) {
+    const match = trimmed.match(/\/d\/([a-zA-Z0-9-_]+)/);
+    fileId = match ? match[1] : '';
+  }
+  // Format: https://drive.google.com/open?id=FILE_ID
+  else if (trimmed.includes('id=')) {
+    const match = trimmed.match(/id=([a-zA-Z0-9-_]+)/);
+    fileId = match ? match[1] : '';
+  }
+  // Fallback: look for any long alphanumeric string that looks like a file ID
+  else {
+    const match = trimmed.match(/([a-zA-Z0-9-_]{20,})/);
+    fileId = match ? match[1] : '';
+  }
+  
+  // Return thumbnail URL if we found an ID
+  if (fileId) {
+    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w500`;
+  }
+  
+  // If it looks like a direct image URL, return it
+  if (trimmed.startsWith('http')) {
+    return trimmed;
+  }
+  
+  return '';
 }
 
 async function loadCourses() {
