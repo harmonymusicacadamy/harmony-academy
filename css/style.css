@@ -614,22 +614,80 @@ p { margin: 0; color: var(--ivory-dim); }
   background: var(--ink-card);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  padding: 1.9rem;
+  overflow: hidden;
   transition: border-color 0.3s, transform 0.3s var(--ease);
+  display: flex;
+  flex-direction: column;
 }
 .course-card:hover { border-color: var(--gold); transform: translateY(-4px); }
-.course-card .track {
-  font-family: var(--font-utility);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--blue-note);
+
+.course-image {
+  width: 100%;
+  height: 200px;
+  background: var(--ink-raised);
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
 }
-.course-card h3 { margin-top: 0.6rem; }
-.course-card .meta-list { list-style: none; margin: 1.1rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
-.course-card .meta-list li { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.88rem; border-top: 1px solid var(--line); padding-top: 0.5rem; }
-.course-card .meta-list li span:first-child { color: var(--ivory-dim); font-family: var(--font-utility); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
-.course-card .meta-list li span:last-child { color: var(--ivory); text-align: right; }
+.course-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.4s var(--ease);
+}
+.course-card:hover .course-image img {
+  transform: scale(1.05);
+}
+
+.course-info {
+  padding: 1.6rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-info .track { 
+  font-family: var(--font-utility); 
+  font-size: 0.7rem; 
+  letter-spacing: 0.12em; 
+  text-transform: uppercase; 
+  color: var(--blue-note);
+  margin-bottom: 0.5rem;
+}
+
+.course-info h3 { 
+  margin: 0 0 1rem 0;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+}
+
+.course-info .meta-list { 
+  list-style: none; 
+  margin: 0; 
+  padding: 0; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.5rem;
+  flex: 1;
+}
+.course-info .meta-list li { 
+  display: flex; 
+  justify-content: space-between; 
+  gap: 1rem; 
+  font-size: 0.88rem; 
+  border-top: 1px solid var(--line); 
+  padding-top: 0.5rem; 
+}
+.course-info .meta-list li span:first-child { 
+  color: var(--ivory-dim); 
+  font-family: var(--font-utility); 
+  font-size: 0.72rem; 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em; 
+}
+.course-info .meta-list li span:last-child { 
+  color: var(--ivory); 
+  text-align: right; 
+}
 
 /* ===================== REGIONAL PRICING SELECTOR ===================== */
 .region-selector {
