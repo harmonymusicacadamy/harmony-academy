@@ -165,10 +165,12 @@ function initVideoModal() {
   `;
   document.body.appendChild(overlay);
 
-  const close = () => {
-    overlay.classList.remove('open');
-    document.getElementById('videoModalContent').innerHTML = '';
-  };
+ const close = () => {
+    overlay.classList.remove("open");
+
+    // Stop video playback
+    document.getElementById("videoModalContent").innerHTML = "";
+};
 
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) close();
