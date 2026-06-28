@@ -179,13 +179,24 @@ function initVideoModal() {
   });
 
  window.openVideoModal = (embedUrl) => {
-    if (!embedUrl) return;
+  if (!embedUrl) return;
 
-    document.getElementById('videoModalContent').innerHTML =
-        `<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  const url = embedUrl.includes("?")
+      ? `${embedUrl}&autoplay=1&rel=0&modestbranding=1`
+      : `${embedUrl}?autoplay=1&rel=0&modestbranding=1`;
 
-    overlay.classList.add('open');
+  document.getElementById("videoModalContent").innerHTML = `
+      <iframe
+          src="${url}"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy">
+      </iframe>
+  `;
+
+  overlay.classList.add("open");
 };
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const activePage = document.body.getAttribute('data-page') || 'index.html';
