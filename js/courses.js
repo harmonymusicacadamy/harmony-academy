@@ -1,13 +1,25 @@
 /**
- * courses.js — renders the Courses tab as a catalog grid.
+ * courses.js — renders the Courses tab as a catalog grid with images.
  * Designed to adapt automatically: whatever columns you add to the
- * "Courses" tab beyond the main title column will be listed as
- * labeled details on each card, so you can add Duration, Fee,
- * Instructor, etc. at any time without touching this file.
+ * "Courses" tab beyond the title and image columns will be listed as
+ * labeled details on each card.
+ * 
+ * Expected columns:
+ *   - Instrument/Course/Name (title)
+ *   - Image (Google Drive link or image URL) — optional
+ *   - Any other columns for details (Duration, Fee, Instructor, etc.)
  */
 
 // The column used as each card's headline. Falls back to the first column found.
 const COURSE_TITLE_KEYS = ['Instrument', 'Course', 'Name', 'Title'];
+
+// Convert Drive links to embeddable URLs
+function courseImageUrl(link) {
+  if (!link || typeof link !== 'string') return '';
+  const idMatch = link.match(/[-\w]{20,}/);
+  const id = idMatch ? idMatch[0] : '';
+  return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w500` : link;
+}
 
 async function loadCourses() {
   const mount = document.getElementById('courseGrid');
@@ -22,10 +34,14 @@ async function loadCourses() {
 
     const allKeys = Object.keys(rows[0]);
     const titleKey = COURSE_TITLE_KEYS.find((k) => allKeys.includes(k)) || allKeys[0];
-    const detailKeys = allKeys.filter((k) => k !== titleKey);
+    const imageKey = allKeys.find((k) => k.toLowerCase() === 'image');
+    const detailKeys = allKeys.filter((k) => k !== titleKey && k !== imageKey);
 
     mount.innerHTML = rows
       .map((row, i) => {
+        const imageLink = imageKey ? row[imageKey] : '';
+        const imageUrl = courseImageUrl(imageLink);
+        
         const details = detailKeys
           .filter((k) => row[k] !== '' && row[k] !== null && row[k] !== undefined)
           .map((k) => `<li><span>${escapeHtml(k)}</span><span>${escapeHtml(row[k])}</span></li>`)
@@ -33,9 +49,16 @@ async function loadCourses() {
 
         return `
         <article class="course-card reveal in-view">
-          <div class="track">Track ${String(i + 1).padStart(2, '0')}</div>
-          <h3>${escapeHtml(row[titleKey])}</h3>
-          ${details ? `<ul class="meta-list">${details}</ul>` : ''}
+          ${imageUrl ? `
+            <div class="course-image">
+              <img src="${imageUrl}" alt="${escapeHtml(row[titleKey])}" />
+            </div>
+          ` : ''}
+          <div class="course-info">
+            <div class="track">Track ${String(i + 1).padStart(2, '0')}</div>
+            <h3>${escapeHtml(row[titleKey])}</h3>
+            ${details ? `<ul class="meta-list">${details}</ul>` : ''}
+          </div>
         </article>`;
       })
       .join('');
