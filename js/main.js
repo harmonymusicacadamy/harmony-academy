@@ -181,16 +181,10 @@ function initVideoModal() {
  window.openVideoModal = (embedUrl) => {
     if (!embedUrl) return;
 
-    document.getElementById("videoModalContent").innerHTML = `
-        <iframe
-            src="${embedUrl}?autoplay=1&rel=0&modestbranding=1"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            loading="lazy">
-        </iframe>
-    `;
+    document.getElementById('videoModalContent').innerHTML =
+        `<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
 
-    overlay.classList.add("open");
+    overlay.classList.add('open');
 };
 
 document.addEventListener('DOMContentLoaded', () => {
