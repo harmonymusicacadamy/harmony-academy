@@ -109,6 +109,18 @@ p { margin: 0; color: var(--ivory-dim); }
   display: inline-block;
 }
 
+#videoModalContent{
+    width:100%;
+    height:100%;
+}
+
+#videoModalContent iframe{
+    width:100%;
+    height:100%;
+    display:block;
+    border:none;
+}
+
 /* ===================== BUTTONS ===================== */
 .btn {
   font-family: var(--font-utility);
