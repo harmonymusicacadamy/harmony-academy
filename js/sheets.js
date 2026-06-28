@@ -77,12 +77,24 @@ async function fetchSheetTab(tabName) {
 function driveEmbedUrl(link) {
   if (!link || typeof link !== "string") return "";
 
-  const idMatch = link.match(/[-\w]{20,}/);
-  const id = idMatch ? idMatch[0] : "";
+  // YouTube Watch URL
+  let match = link.match(/[?&]v=([^&]+)/);
 
-  return id
-    ? `https://drive.google.com/file/d/${id}/preview`
-    : "";
+  // YouTube Short URL
+  if (!match) {
+    match = link.match(/youtu\.be\/([^?&]+)/);
+  }
+
+  // YouTube Shorts
+  if (!match) {
+    match = link.match(/shorts\/([^?&]+)/);
+  }
+
+  if (match) {
+    return `https://www.youtube.com/embed/${match[1]}?rel=0`;
+  }
+
+  return "";
 }
 
 /**
