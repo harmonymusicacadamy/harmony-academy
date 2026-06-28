@@ -704,33 +704,38 @@ p { margin: 0; color: var(--ivory-dim); }
   font-size: clamp(1.1rem, 2vw, 1.35rem);
 }
 
-.course-info .meta-list { 
-  list-style: none; 
-  margin: 0; 
-  padding: 0; 
-  display: flex; 
-  flex-direction: column; 
+.course-info .meta-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
   flex: 1;
 }
-.course-info .meta-list li { 
-  display: flex; 
-  justify-content: space-between; 
-  gap: 1rem; 
-  font-size: 0.88rem; 
-  border-top: 1px solid var(--line); 
-  padding-top: 0.5rem; 
+
+.course-info .meta-list li {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 1rem;
+  align-items: start;
+  font-size: 0.88rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.75rem;
 }
-.course-info .meta-list li span:first-child { 
-  color: var(--ivory-dim); 
-  font-family: var(--font-utility); 
-  font-size: 0.72rem; 
-  text-transform: uppercase; 
-  letter-spacing: 0.05em; 
+
+.course-info .meta-list li span:first-child {
+  color: var(--ivory-dim);
+  font-family: var(--font-utility);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
-.course-info .meta-list li span:last-child { 
-  color: var(--ivory); 
-  text-align: right; 
+
+.course-info .meta-list li span:last-child {
+  color: var(--ivory);
+  text-align: left;
+  line-height: 1.6;
 }
 
 /* ===================== REGIONAL PRICING SELECTOR ===================== */
