@@ -202,3 +202,17 @@ renderFooter();
 initVideoModal();
 initRevealAnimations();
 });
+
+function closeMenu(){
+
+    navLinks.classList.remove("open");
+
+    backdrop.classList.remove("active");
+
+    document.body.classList.remove("menu-open");
+
+    toggle.textContent="☰";
+
+    toggle.setAttribute("aria-expanded","false");
+
+}
