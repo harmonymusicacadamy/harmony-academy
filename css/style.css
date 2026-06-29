@@ -6,7 +6,7 @@
    transition, echoing a five-line musical staff.
    =========================================================== */
 
-:root {
+:root { 
   /* Color */
   --ink: #0a0a0c;
   --ink-raised: #14141a;
