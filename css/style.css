@@ -219,7 +219,7 @@ p { margin: 0; color: var(--ivory-dim); }
     flex-direction: column; 
     align-items: stretch;
     justify-content: flex-start; 
-    padding: 0;
+    padding: 1.5rem 0; 
     gap: 0; 
     background: var(--ink);
     border: none;
@@ -237,23 +237,24 @@ p { margin: 0; color: var(--ivory-dim); }
     transform: translateX(0); 
   }
   .nav-links a { 
-    font-size: 1.08rem; 
+    font-size: 1rem; 
     width: 100%;
-    padding: 1.6rem var(--gutter);
+    padding: 1.2rem var(--gutter);
     border-bottom: 1px solid var(--line);
     color: var(--ivory);
     text-align: left;
     margin: 0;
+    transition: all 0.2s ease;
   }
   .nav-links a:hover {
-    background: rgba(240, 169, 60, 0.12);
+    background: rgba(240, 169, 60, 0.08);
     color: var(--gold);
+    padding-left: calc(var(--gutter) + 0.5rem);
   }
   .nav-links a.active {
-    background: rgba(240, 169, 60, 0.15);
-    border-left: 4px solid var(--gold);
-    border-bottom: 1px solid var(--line);
-    padding-left: calc(var(--gutter) - 4px);
+    background: rgba(240, 169, 60, 0.12);
+    border-left: 3px solid var(--gold);
+    padding-left: calc(var(--gutter) - 3px);
     color: var(--gold);
   }
   .nav-links a:last-child {
@@ -263,7 +264,7 @@ p { margin: 0; color: var(--ivory-dim); }
   .nav-actions .btn-primary { display: none; }
   .nav-links .mobile-portal-btn { 
     display: inline-flex; 
-    margin: 2rem var(--gutter) 1rem;
+    margin: 1.5rem var(--gutter) 1rem;
     width: calc(100% - 2 * var(--gutter));
     justify-content: center;
   }
