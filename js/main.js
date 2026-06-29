@@ -180,12 +180,33 @@ function initVideoModal() {
     if (e.key === 'Escape') close();
   });
 
-  window.openVideoModal = (embedUrl) => {
+ window.openVideoModal = (embedUrl) => {
     if (!embedUrl) return;
-    document.getElementById('videoModalContent').innerHTML =
-      `<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-    overlay.classList.add('open');
-  };
+
+    const container = document.getElementById("videoModalContent");
+
+    // Remove any previous iframe
+    container.innerHTML = "";
+
+    // Show modal first
+    overlay.classList.add("open");
+
+    // Inject iframe after modal is visible
+    requestAnimationFrame(() => {
+        container.innerHTML = `
+            <iframe
+                width="100%"
+                height="100%"
+                src="${embedUrl}&autoplay=1"
+                title="Student Testimonial"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+            </iframe>
+        `;
+    });
+};
 }
 
 document.addEventListener('DOMContentLoaded', () => {
