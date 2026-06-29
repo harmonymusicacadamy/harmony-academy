@@ -86,9 +86,11 @@ function driveEmbedUrl(link) {
   }
 
   // YouTube Shorts
-  if (!match) {
-    match = link.match(/shorts\/([^?&]+)/);
-  }
+const shorts = url.match(/youtube\.com\/shorts\/([^?&]+)/);
+
+if(shorts){
+    return `https://www.youtube.com/embed/${shorts[1]}?rel=0&portrait=1`;
+}
 
   if (match) {
     return `https://www.youtube.com/embed/${match[1]}?rel=0`;
