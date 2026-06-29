@@ -17,5 +17,6 @@ const SITE_CONFIG = {
 
   // Where the "Login as Student" button sends people
   STUDENT_PORTAL_URL: 'https://tinyurl.com/hma-Connect',
-  GOOGLE_REG : 'https://forms.gle/e7DBkCfAXG21G9iS7'
+  GOOGLE_REG : 'https://forms.gle/e7DBkCfAXG21G9iS7',
+  GOOGLE_ENQ :'https://forms.gle/SXq2JHfukWStjP3w6'
 };
