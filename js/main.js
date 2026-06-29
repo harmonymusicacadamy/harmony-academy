@@ -43,15 +43,6 @@ function renderHeader(activePage) {
   // Create backdrop overlay
   const backdrop = document.createElement('div');
   backdrop.id = 'nav-backdrop';
-  backdrop.style.cssText = `
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 98;
-  `;
   document.body.appendChild(backdrop);
   
   toggle.addEventListener('click', () => {
@@ -59,14 +50,12 @@ function renderHeader(activePage) {
     toggle.setAttribute('aria-expanded', String(isOpen));
     toggle.textContent = isOpen ? '✕' : '☰';
     
-    // Show/hide backdrop
+    // Show/hide backdrop using class
     if (isOpen) {
-      backdrop.style.opacity = '1';
-      backdrop.style.pointerEvents = 'auto';
+      backdrop.classList.add('active');
       document.body.style.overflow = 'hidden';
     } else {
-      backdrop.style.opacity = '0';
-      backdrop.style.pointerEvents = 'none';
+      backdrop.classList.remove('active');
       document.body.style.overflow = 'auto';
     }
   });
@@ -76,8 +65,7 @@ function renderHeader(activePage) {
     navLinks.classList.remove('open');
     toggle.setAttribute('aria-expanded', 'false');
     toggle.textContent = '☰';
-    backdrop.style.opacity = '0';
-    backdrop.style.pointerEvents = 'none';
+    backdrop.classList.remove('active');
     document.body.style.overflow = 'auto';
   });
   
@@ -86,8 +74,7 @@ function renderHeader(activePage) {
       navLinks.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
       toggle.textContent = '☰';
-      backdrop.style.opacity = '0';
-      backdrop.style.pointerEvents = 'none';
+      backdrop.classList.remove('active');
       document.body.style.overflow = 'auto';
     })
   );
@@ -120,7 +107,9 @@ function renderFooter() {
       <div>
         <h4>Get in touch</h4>
         <ul>
-          <li><a href="mailto:harmonymusicacadamy@gmail.com.com">harmonymusicacadamy@gmail.com</a></li>
+          <li><a href="mailto:hello@harmonymusicacademy.com">hello@harmonymusicacademy.com</a></li>
+          <li><a href="tel:+10000000000">+1 (000) 000-0000</a></li>
+          <li><span>Studio address goes here</span></li>
         </ul>
       </div>
     </div>
@@ -165,12 +154,10 @@ function initVideoModal() {
   `;
   document.body.appendChild(overlay);
 
- const close = () => {
-    overlay.classList.remove("open");
-
-    // Stop video playback
-    document.getElementById("videoModalContent").innerHTML = "";
-};
+  const close = () => {
+    overlay.classList.remove('open');
+    document.getElementById('videoModalContent').innerHTML = '';
+  };
 
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) close();
@@ -180,24 +167,12 @@ function initVideoModal() {
     if (e.key === 'Escape') close();
   });
 
- window.openVideoModal = (embedUrl) => {
-  if (!embedUrl) return;
-
-  const url = embedUrl.includes("?")
-      ? `${embedUrl}&autoplay=1&rel=0&modestbranding=1`
-      : `${embedUrl}?autoplay=1&rel=0&modestbranding=1`;
-
-  document.getElementById("videoModalContent").innerHTML = `
-      <iframe
-          src="${url}"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          loading="lazy">
-      </iframe>
-  `;
-
-  overlay.classList.add("open");
-};
+  window.openVideoModal = (embedUrl) => {
+    if (!embedUrl) return;
+    document.getElementById('videoModalContent').innerHTML =
+      `<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    overlay.classList.add('open');
+  };
 }
 
 document.addEventListener('DOMContentLoaded', () => {
