@@ -162,13 +162,14 @@ p { margin: 0; color: var(--ivory-dim); }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.9rem var(--gutter);
+  padding: 1.4rem var(--gutter);
   max-width: var(--max-width);
   margin: 0 auto;
+  min-height: 90px;
 }
 .nav-brand { display: flex; align-items: center; gap: 0.7rem; }
-.nav-brand img { height: 40px; width: 40px; border-radius: 9px; }
-.nav-brand-text { font-family: var(--font-display); font-size: 1.05rem; line-height: 1.1; }
+.nav-brand img { height: 50px; width: 50px; border-radius: 9px; }
+.nav-brand-text { font-family: var(--font-display); font-size: 1.15rem; line-height: 1.1; }
 .nav-brand-text strong { color: var(--gold); font-weight: 600; }
 .nav-brand-text span { display: block; font-family: var(--font-utility); font-size: 0.6rem; letter-spacing: 0.15em; color: var(--ivory-dim); text-transform: uppercase; }
 
@@ -178,7 +179,7 @@ p { margin: 0; color: var(--ivory-dim); }
   gap: 2.1rem;
   list-style: none;
   margin: 0; 
-  padding: 1rem 1.5rem;
+  padding: 1.2rem 1.8rem;
   background: rgba(10, 10, 12, 0.95);
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
@@ -186,12 +187,12 @@ p { margin: 0; color: var(--ivory-dim); }
 }
 .nav-links a {
   font-family: var(--font-utility);
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ivory-dim);
   position: relative;
-  padding: 0.3rem 0;
+  padding: 0.6rem 0;
   transition: color 0.25s;
 }
 .nav-links a:hover, .nav-links a.active { color: var(--ivory); }
@@ -214,13 +215,13 @@ p { margin: 0; color: var(--ivory-dim); }
 @media (max-width: 880px) {
   .nav-links { 
     position: fixed; 
-    inset: 64px 0 0 0; 
+    inset: 70px 0 0 0; 
     flex-direction: column; 
-    align-items: flex-start;
+    align-items: stretch;
     justify-content: flex-start; 
-    padding: 2.5rem var(--gutter); 
-    gap: 1.6rem; 
-    background: linear-gradient(180deg, var(--ink), var(--ink-raised));
+    padding: 2rem 1rem; 
+    gap: 1rem;
+    background: var(--ink);
     border: none;
     border-radius: 0;
     transform: translateX(100%); 
@@ -229,40 +230,62 @@ p { margin: 0; color: var(--ivory-dim); }
     z-index: 99;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.9);
     overflow-y: auto;
-    max-height: calc(100vh - 64px);
+    height: 100vh;
+    width: 100%;
   }
   .nav-links.open { 
     transform: translateX(0); 
   }
   .nav-links a { 
-    font-size: 1.1rem; 
+    font-size: 1.05rem; 
     width: 100%;
-    padding: 1.2rem 0;
-    border-bottom: 1px solid var(--line);
+    padding: 1.2rem 1.4rem;
+    border: none;
+    border-radius: 10px;
     color: var(--ivory);
+    text-align: left;
+    margin: 0;
+    transition: all 0.3s ease;
+    background: rgba(240, 169, 60, 0.08);
   }
   .nav-links a:hover {
+    background: rgba(240, 169, 60, 0.2);
     color: var(--gold);
+    transform: translateX(8px);
   }
-  .nav-links a:last-child {
-    border-bottom: none;
+  .nav-links a.active {
+    background: rgba(240, 169, 60, 0.25);
+    color: var(--gold);
+    transform: translateX(8px);
+    font-weight: 500;
   }
   .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
   .nav-actions .btn-primary { display: none; }
-  .nav-links .mobile-portal-btn { display: inline-flex; margin-top: 1rem; width: 100%; justify-content: center; }
+  .nav-links .mobile-portal-btn { 
+    display: inline-flex; 
+    margin: 2rem 1rem 1rem;
+    width: calc(100% - 2rem);
+    justify-content: center;
+  }
 }
 
 /* Mobile menu backdrop overlay */
 @media (max-width: 880px) {
-  .site-header::after {
-    content: '';
+  #nav-backdrop {
     position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s var(--ease);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 98;
+  }
+  #nav-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 @media (min-width: 881px) {
