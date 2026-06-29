@@ -54,21 +54,18 @@ backdrop.style.cssText = `
  `;
 document.body.appendChild(backdrop);
 
-toggle.addEventListener('click', () => {
-const isOpen = navLinks.classList.toggle('open');
-toggle.setAttribute('aria-expanded', String(isOpen));
-toggle.textContent = isOpen ? '✕' : '☰';
+toggle.addEventListener("click",()=>{
 
-// Show/hide backdrop
-if (isOpen) {
-backdrop.style.opacity = '1';
-backdrop.style.pointerEvents = 'auto';
-document.body.style.overflow = 'hidden';
-} else {
-backdrop.style.opacity = '0';
-backdrop.style.pointerEvents = 'none';
-document.body.style.overflow = 'auto';
-}
+    const isOpen=navLinks.classList.toggle("open");
+
+    toggle.textContent=isOpen?"✕":"☰";
+
+    toggle.setAttribute("aria-expanded",isOpen);
+
+    backdrop.classList.toggle("active",isOpen);
+
+    document.body.classList.toggle("menu-open",isOpen);
+
 });
 
 // Close menu when clicking backdrop
