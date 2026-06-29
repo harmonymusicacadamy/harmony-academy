@@ -153,9 +153,12 @@ function initVideoModal() {
   document.body.appendChild(overlay);
 
   const close = () => {
-    overlay.classList.remove('open');
-    document.getElementById('videoModalContent').innerHTML = '';
-  };
+    const container = document.getElementById("videoModalContent");
+
+    container.innerHTML = "";
+
+    overlay.classList.remove("open");
+};
 
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) close();
@@ -167,11 +170,25 @@ function initVideoModal() {
 
   window.openVideoModal = (embedUrl) => {
     if (!embedUrl) return;
-    document.getElementById('videoModalContent').innerHTML =
-      `<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-    overlay.classList.add('open');
-  };
-}
+
+    overlay.classList.add("open");
+
+    const container = document.getElementById("videoModalContent");
+    container.innerHTML = "";
+
+    requestAnimationFrame(() => {
+        container.innerHTML = `
+            <iframe
+                src="${embedUrl}"
+                width="100%"
+                height="100%"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        `;
+    });
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   const activePage = document.body.getAttribute('data-page') || 'index.html';
