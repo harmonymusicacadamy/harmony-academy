@@ -180,32 +180,38 @@ function initVideoModal() {
     if (e.key === 'Escape') close();
   });
 
- window.openVideoModal = (embedUrl) => {
+window.openVideoModal = (embedUrl) => {
+
     if (!embedUrl) return;
 
     const container = document.getElementById("videoModalContent");
+    const modalBox = overlay.querySelector(".modal-box");
 
-    // Remove any previous iframe
     container.innerHTML = "";
 
-    // Show modal first
+    // Detect Shorts / portrait videos
+    const portrait =
+        embedUrl.includes("/shorts/") ||
+        embedUrl.includes("shorts") ||
+        embedUrl.includes("portrait");
+
+    modalBox.classList.remove("portrait","landscape");
+    modalBox.classList.add(portrait ? "portrait" : "landscape");
+
     overlay.classList.add("open");
 
-    // Inject iframe after modal is visible
     requestAnimationFrame(() => {
+
         container.innerHTML = `
             <iframe
-                width="100%"
-                height="100%"
-                src="${embedUrl}&autoplay=1"
-                title="Student Testimonial"
-                frameborder="0"
+                src="${embedUrl}${embedUrl.includes("?") ? "&" : "?"}autoplay=1"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
                 allowfullscreen>
             </iframe>
         `;
+
     });
+
 };
 }
 
