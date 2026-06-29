@@ -168,26 +168,13 @@ function initVideoModal() {
     if (e.key === 'Escape') close();
   });
 
-  window.openVideoModal = (embedUrl) => {
+ window.openVideoModal = (embedUrl) => {
     if (!embedUrl) return;
 
-    overlay.classList.add("open");
+    document.getElementById('videoModalContent').innerHTML =
+        `<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
 
-    const container = document.getElementById("videoModalContent");
-    container.innerHTML = "";
-
-    requestAnimationFrame(() => {
-        container.innerHTML = `
-            <iframe
-                src="${embedUrl}"
-                width="100%"
-                height="100%"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen>
-            </iframe>
-        `;
-    });
+    overlay.classList.add('open');
 };
 
 document.addEventListener('DOMContentLoaded', () => {
