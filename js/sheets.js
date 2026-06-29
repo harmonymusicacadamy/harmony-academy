@@ -86,11 +86,9 @@ function driveEmbedUrl(link) {
   }
 
   // YouTube Shorts
-const shorts = link.match(/youtube\.com\/shorts\/([^?&]+)/);
-
-if(shorts){
-    return `https://www.youtube.com/embed/${shorts[1]}?rel=0&portrait=1`;
-}
+  if (!match) {
+    match = link.match(/shorts\/([^?&]+)/);
+  }
 
   if (match) {
     return `https://www.youtube.com/embed/${match[1]}?rel=0`;
