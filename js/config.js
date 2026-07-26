@@ -11,7 +11,6 @@ const SITE_CONFIG = {
     NEWS: 'Latest News',
     TESTIMONIALS: 'Testimonials',
     COURSES: 'Courses',
-    PRICING: 'Pricing',
     FAQ:'FAQ'
   },
 
