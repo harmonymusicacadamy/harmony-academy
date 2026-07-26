@@ -1,118 +1,218 @@
 /**
- * pricing.js — renders the Pricing tab with India/Overseas regional filtering.
- * 
- * Expected columns in the Pricing sheet:
- *   - Region (India or Overseas)
- *   - Level (tier name, e.g., "Beginner")
- *   - Price (e.g., "₹2000" or "$30")
- *   - Perks (one per line, or comma-separated)
+ * pricing.js
+ * Supports both:
+ * 1. Object data:
+ *    { Region:"India", Level:"Beginner", Price:"₹2500", Perks:"..." }
+ *
+ * 2. Array data:
+ *    ["India","Beginner","₹2500","..."]
  */
 
 let allPricingRows = [];
-let currentRegion = 'Overseas';
+let currentRegion = "Overseas";
 
 function parsePerks(raw) {
-  if (!raw) return [];
-  const text = String(raw);
-  const parts = text.includes('\n') ? text.split('\n') : text.split(',');
-  return parts.map((p) => p.trim()).filter(Boolean);
+    if (!raw) return [];
+
+    return String(raw)
+        .split(/\n|,/)
+        .map(p => p.trim())
+        .filter(Boolean);
+}
+
+function normalizePricingData(rows) {
+
+    if (!Array.isArray(rows)) return [];
+
+    return rows.map(row => {
+
+        // Already object
+        if (!Array.isArray(row)) {
+            return {
+                Region: row.Region || row.region || "",
+                Level: row.Level || row.level || "",
+                Price: row.Price || row.price || "",
+                Perks: row.Perks || row.perks || ""
+            };
+        }
+
+        // Array returned from Apps Script
+        return {
+            Region: row[0] || "",
+            Level: row[1] || "",
+            Price: row[2] || "",
+            Perks: row[3] || ""
+        };
+
+    });
+
 }
 
 function renderPricingCards(region) {
-  const mount = document.getElementById('pricingGrid');
-  if (!mount) return;
 
-  const filtered = allPricingRows.filter((row) => {
-    const rowRegion = String(row.Region || '').trim();
-    return rowRegion.toLowerCase() === region.toLowerCase();
-  });
+    const mount = document.getElementById("pricingGrid");
 
-  if (filtered.length === 0) {
-    mount.innerHTML = `<div class="empty-state">No pricing tiers for ${region} yet. Make sure your Pricing sheet has a "Region" column with values "India" or "Overseas".</div>`;
-    return;
-  }
+    if (!mount) return;
 
-  mount.innerHTML = filtered
-    .map((row) => {
-      const perks = parsePerks(row.Perks);
-      const perkHtml = perks.length > 0 
-        ? perks.map((p) => `<li>${escapeHtml(p)}</li>`).join('')
-        : '<li style="opacity:0.5;"><em>No features listed</em></li>';
-      
-      const priceText = String(row.Price || '').trim();
-      const priceLooksNumeric = /^[\$₹€£]?\s?[\d,.]+/.test(priceText);
+    const filtered = allPricingRows.filter(row =>
+        String(row.Region).trim().toLowerCase() === region.toLowerCase()
+    );
 
-      return `
+    if (!filtered.length) {
+
+        mount.innerHTML = `
+            <div class="empty-state">
+                No pricing found for <b>${region}</b>.
+            </div>
+        `;
+
+        return;
+    }
+
+    mount.innerHTML = filtered.map(row => {
+
+        const perks = parsePerks(row.Perks);
+
+        return `
+
         <article class="price-card reveal in-view">
-          <div class="level">${escapeHtml(row.Level)}</div>
-          <div class="price">${escapeHtml(priceText)}${priceLooksNumeric ? '<small> / month</small>' : ''}</div>
-          <ul>${perkHtml}</ul>
-          <a href="${SITE_CONFIG.GOOGLE_REG}" target="_blank" rel="noopener" class="btn btn-outline">Get Started</a>
-        </article>`;
-    })
-    .join('');
+
+            <div class="level">${escapeHtml(row.Level)}</div>
+
+            <div class="price">
+                ${escapeHtml(row.Price)}
+                <small>/ month</small>
+            </div>
+
+            <ul>
+
+                ${perks.map(p=>`
+                    <li>${escapeHtml(p)}</li>
+                `).join("")}
+
+            </ul>
+
+            <a
+                href="${SITE_CONFIG.GOOGLE_REG}"
+                class="btn btn-outline"
+                target="_blank"
+                rel="noopener"
+            >
+                Get Started
+            </a>
+
+        </article>
+
+        `;
+
+    }).join("");
+
 }
 
-function renderRegionToggle(detectedRegion) {
-  const container = document.getElementById('pricingRegionToggle');
-  if (!container) return;
+function renderRegionToggle(region) {
 
-  currentRegion = detectedRegion;
+    currentRegion = region;
 
-  container.innerHTML = `
-    <div class="region-selector">
-      <span class="region-label">Pricing for:</span>
-      <div class="region-buttons">
-        <button 
-          class="region-btn ${currentRegion === 'India' ? 'active' : ''}" 
-          data-region="India"
-          onclick="switchRegion('India')">
-          🇮🇳 India
-        </button>
-        <button 
-          class="region-btn ${currentRegion === 'Overseas' ? 'active' : ''}" 
-          data-region="Overseas"
-          onclick="switchRegion('Overseas')">
-          🌍 Overseas
-        </button>
-      </div>
-    </div>
-  `;
+    const toggle = document.getElementById("pricingRegionToggle");
 
-  renderPricingCards(currentRegion);
+    if (!toggle) return;
+
+    toggle.innerHTML = `
+
+        <div class="region-selector">
+
+            <button
+                class="region-btn ${region==="India"?"active":""}"
+                onclick="switchRegion('India')">
+                🇮🇳 India
+            </button>
+
+            <button
+                class="region-btn ${region==="Overseas"?"active":""}"
+                onclick="switchRegion('Overseas')">
+                🌍 Overseas
+            </button>
+
+        </div>
+
+    `;
+
+    renderPricingCards(region);
+
 }
 
 function switchRegion(region) {
-  currentRegion = region;
-  setUserRegion(region);
-  
-  // Update button states
-  document.querySelectorAll('.region-btn').forEach((btn) => {
-    btn.classList.toggle('active', btn.dataset.region === region);
-  });
 
-  renderPricingCards(region);
+    currentRegion = region;
+
+    if (typeof setUserRegion === "function") {
+        setUserRegion(region);
+    }
+
+    document.querySelectorAll(".region-btn").forEach(btn=>{
+
+        btn.classList.toggle(
+            "active",
+            btn.textContent.includes(region)
+        );
+
+    });
+
+    renderPricingCards(region);
+
 }
 
 async function loadPricing() {
-  const mount = document.getElementById('pricingGrid');
-  if (!mount) return;
 
-  try {
-    allPricingRows = await fetchSheetTab(SITE_CONFIG.TABS.PRICING);
+    const mount = document.getElementById("pricingGrid");
 
-    if (allPricingRows.length === 0) {
-      mount.innerHTML = `<div class="empty-state">No pricing tiers yet — add rows to the "${SITE_CONFIG.TABS.PRICING}" tab with columns: Region, Level, Price, Perks.</div>`;
-      return;
+    if (!mount) return;
+
+    mount.innerHTML = "Loading pricing...";
+
+    try {
+
+        const rows = await fetchSheetTab(SITE_CONFIG.TABS.PRICING);
+
+        console.log("Raw Pricing Data:", rows);
+
+        allPricingRows = normalizePricingData(rows);
+
+        console.log("Normalized:", allPricingRows);
+
+        if (!allPricingRows.length) {
+
+            mount.innerHTML = `
+                <div class="empty-state">
+                    No pricing available.
+                </div>
+            `;
+
+            return;
+        }
+
+        let region = "Overseas";
+
+        if (typeof initRegionDetection === "function") {
+            region = await initRegionDetection();
+        }
+
+        renderRegionToggle(region);
+
     }
 
-    // Detect region and show toggle
-    const detected = await initRegionDetection();
-    renderRegionToggle(detected);
-  } catch (err) {
-    console.error(err);
-    mount.innerHTML = `<div class="empty-state">Couldn't load pricing right now. Make sure the Google Sheet is shared as "Anyone with the link — Viewer."</div>`;
-  }
+    catch(err){
+
+        console.error(err);
+
+        mount.innerHTML = `
+            <div class="empty-state">
+                Failed to load pricing.
+            </div>
+        `;
+
+    }
+
 }
 
-document.addEventListener('DOMContentLoaded', loadPricing);
+document.addEventListener("DOMContentLoaded", loadPricing);
