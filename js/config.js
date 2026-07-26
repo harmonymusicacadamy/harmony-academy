@@ -11,7 +11,8 @@ const SITE_CONFIG = {
     NEWS: 'Latest News',
     TESTIMONIALS: 'Testimonials',
     COURSES: 'Courses',
-    FAQ:'FAQ'
+    FAQ:'FAQ',
+    Pricing:'Pricing'
   },
 
   // Where the "Login as Student" button sends people
