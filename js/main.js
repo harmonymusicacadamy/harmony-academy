@@ -8,7 +8,7 @@ const SITE_NAV = [
 { href: 'index.html', label: 'Home' },
 { href: 'about.html', label: 'About' },
 { href: 'courses.html', label: 'Courses' },
-{ href: 'faq.html', label: 'FAQ' },
+{ href: 'faq.html', label: 'FAQ' }
 ];
 
 function renderHeader(activePage) {
