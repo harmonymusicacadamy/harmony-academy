@@ -8,7 +8,6 @@ const SITE_NAV = [
 { href: 'index.html', label: 'Home' },
 { href: 'about.html', label: 'About' },
 { href: 'courses.html', label: 'Courses' },
-{ href: 'pricing.html', label: 'Pricing' },
 { href: 'faq.html', label: 'FAQ' },
 ];
 
